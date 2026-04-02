@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>PetShop Manager</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <h1>🐾 PetShop Manager</h1>
+</header>
+
+<main>
+
+  <section class="card">
+    <h2>Cadastro</h2>
+    <form id="form-produto">
+      <input type="text" id="nome" placeholder="Nome" required>
+      <input type="number" id="preco" placeholder="Preço" step="0.01" required>
+      <input type="number" id="quantidade" placeholder="Quantidade" required>
+      <button type="submit">Cadastrar</button>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2>Produtos</h2>
+    <div id="lista-produtos" class="lista-produtos"></div>
+  </section>
+
+  <section class="card">
+    <h2>Venda</h2>
+    <form id="form-venda">
+      <select id="produto-venda"></select>
+      <input type="number" id="quantidade-venda" placeholder="Qtd">
+      <button type="submit">Vender</button>
+    </form>
+    <p>Total: R$ <span id="total">0.00</span></p>
+  </section>
+
+</main>
+
+<script src="js/script.js"></script>
+</body>
+</html>

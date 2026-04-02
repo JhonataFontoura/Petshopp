@@ -1,0 +1,45 @@
+body {
+  font-family: Arial;
+  background: #f4f6f8;
+}
+
+header {
+  background: #4CAF50;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+main {
+  width: 90%;
+  max-width: 900px;
+  margin: 20px auto;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+/* LISTA EM CARDS */
+.lista-produtos {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.produto {
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.produto-preco {
+  color: green;
+  font-weight: bold;
+}
