@@ -1,93 +1,78 @@
-const API = "http://localhost:3000/api/produtos";
+const API = "http://localhost:5000/api";
 
-document.addEventListener("DOMContentLoaded", carregarProdutos);
+// ================= PRODUTOS =================
 
-/* LISTAR */
-function carregarProdutos() {
-  fetch(API)
-    .then(res => res.json())
-    .then(produtos => {
+async function cadastrarProduto() {
+    const nome = document.getElementById("nome").value;
+    const preco = document.getElementById("preco").value;
+    const quantidade = document.getElementById("quantidade").value;
 
-      const lista = document.getElementById("lista-produtos");
-      const select = document.getElementById("produto-venda");
+    const res = await fetch(`${API}/produtos`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            nome,
+            preco,
+            quantidade_estoque: quantidade
+        })
+    });
 
-      lista.innerHTML = "";
-      select.innerHTML = "";
+    const data = await res.json();
+    alert(data.mensagem || data.erro);
 
-      produtos.forEach(produto => {
+    listarProdutos();
+}
 
-        // UI
-        lista.innerHTML += `
-          <div class="produto">
-            <div>
-              <strong>${produto.nome}</strong><br>
-              Estoque: ${produto.quantidade}
-            </div>
-            <div class="produto-preco">
-              R$ ${Number(produto.preco).toFixed(2)}
-            </div>
-          </div>
+async function listarProdutos() {
+    const res = await fetch(`${API}/produtos`);
+    const produtos = await res.json();
+
+    const lista = document.getElementById("listaProdutos");
+    lista.innerHTML = "";
+
+    produtos.forEach(p => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+            ID: ${p.id} | ${p.nome} 
+            - R$ ${p.preco} 
+            - Estoque: ${p.quantidade_estoque}
         `;
-
-        // SELECT
-        select.innerHTML += `
-          <option value="${produto.id}">
-            ${produto.nome}
-          </option>
-        `;
-      });
+        lista.appendChild(li);
     });
 }
 
-/* CADASTRO */
-document.getElementById("form-produto").addEventListener("submit", e => {
-  e.preventDefault();
+// ================= VENDAS =================
 
-  const nome = document.getElementById("nome").value;
-  const preco = document.getElementById("preco").value;
-  const quantidade = document.getElementById("quantidade").value;
+async function registrarVenda() {
+    const produto_id = document.getElementById("produto_id").value;
+    const quantidade = document.getElementById("quantidade_venda").value;
 
-  fetch(API, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ nome, preco, quantidade })
-  })
-  .then(() => {
-    carregarProdutos();
-    e.target.reset();
-  });
-});
-
-/* VENDA */
-document.getElementById("form-venda").addEventListener("submit", e => {
-  e.preventDefault();
-
-  const id = document.getElementById("produto-venda").value;
-  const qtd = parseInt(document.getElementById("quantidade-venda").value);
-
-  fetch(`${API}/${id}`)
-    .then(res => res.json())
-    .then(produto => {
-
-      if (qtd > produto.quantidade) {
-        alert("Estoque insuficiente!");
-        return;
-      }
-
-      const novo = produto.quantidade - qtd;
-      const total = qtd * produto.preco;
-
-      document.getElementById("total").textContent = total.toFixed(2);
-
-      fetch(`${API}/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ quantidade: novo })
-      })
-      .then(() => carregarProdutos());
+    const res = await fetch(`${API}/vendas`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ produto_id, quantidade })
     });
-});
+
+    const data = await res.json();
+    alert(data.mensagem || data.erro);
+
+    listarProdutos();
+    listarVendas();
+}
+
+async function listarVendas() {
+    const res = await fetch(`${API}/vendas`);
+    const vendas = await res.json();
+
+    const lista = document.getElementById("listaVendas");
+    lista.innerHTML = "";
+
+    vendas.forEach(v => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+            ${v.produto} - Qtd: ${v.quantidade} 
+            - Total: R$ ${v.total}
+        `;
+        lista.appendChild(li);
+    });
+}

@@ -1,45 +1,55 @@
 body {
-  font-family: Arial;
-  background: #f4f6f8;
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    margin: 0;
+    padding: 20px;
 }
 
-header {
-  background: #4CAF50;
-  color: white;
-  text-align: center;
-  padding: 20px;
+h1 {
+    text-align: center;
+    color: #333;
 }
 
-main {
-  width: 90%;
-  max-width: 900px;
-  margin: 20px auto;
+section {
+    background: white;
+    padding: 15px;
+    margin: 15px auto;
+    border-radius: 10px;
+    width: 400px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.card {
-  background: white;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 10px;
+input {
+    display: block;
+    width: 95%;
+    padding: 8px;
+    margin: 8px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
-/* LISTA EM CARDS */
-.lista-produtos {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-.produto {
-  display: flex;
-  justify-content: space-between;
-  background: #fff;
-  padding: 15px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+button:hover {
+    background: #0056b3;
 }
 
-.produto-preco {
-  color: green;
-  font-weight: bold;
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background: #eee;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
 }

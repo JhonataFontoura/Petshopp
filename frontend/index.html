@@ -1,45 +1,50 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>PetShop Manager</title>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <title>PetShop Manager</title>
+
+    <!-- CSS corrigido -->
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
 
-<header>
-  <h1>🐾 PetShop Manager</h1>
-</header>
+    <h1>🐾 PetShop Manager</h1>
 
-<main>
+    <!-- CADASTRAR PRODUTO -->
+    <section>
+        <h2>Cadastrar Produto</h2>
+        <input type="text" id="nome" placeholder="Nome">
+        <input type="number" id="preco" placeholder="Preço">
+        <input type="number" id="quantidade" placeholder="Quantidade">
+        <button onclick="cadastrarProduto()">Cadastrar</button>
+    </section>
 
-  <section class="card">
-    <h2>Cadastro</h2>
-    <form id="form-produto">
-      <input type="text" id="nome" placeholder="Nome" required>
-      <input type="number" id="preco" placeholder="Preço" step="0.01" required>
-      <input type="number" id="quantidade" placeholder="Quantidade" required>
-      <button type="submit">Cadastrar</button>
-    </form>
-  </section>
+    <!-- LISTAR PRODUTOS -->
+    <section>
+        <h2>Produtos</h2>
+        <button onclick="listarProdutos()">Atualizar</button>
+        <ul id="listaProdutos"></ul>
+    </section>
 
-  <section class="card">
-    <h2>Produtos</h2>
-    <div id="lista-produtos" class="lista-produtos"></div>
-  </section>
+    <!-- REGISTRAR VENDA -->
+    <section>
+        <h2>Registrar Venda</h2>
+        <input type="number" id="produto_id" placeholder="ID Produto">
+        <input type="number" id="quantidade_venda" placeholder="Quantidade">
+        <button onclick="registrarVenda()">Vender</button>
+    </section>
 
-  <section class="card">
-    <h2>Venda</h2>
-    <form id="form-venda">
-      <select id="produto-venda"></select>
-      <input type="number" id="quantidade-venda" placeholder="Qtd">
-      <button type="submit">Vender</button>
-    </form>
-    <p>Total: R$ <span id="total">0.00</span></p>
-  </section>
+    <!-- LISTAR VENDAS -->
+    <section>
+        <h2>Vendas</h2>
+        <button onclick="listarVendas()">Atualizar</button>
+        <ul id="listaVendas"></ul>
+    </section>
 
-</main>
-
-<script src="js/script.js"></script>
+    <!-- JS corrigido -->
+    <script src="./js/script.js"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>
