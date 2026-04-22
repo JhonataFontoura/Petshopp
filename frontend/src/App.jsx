@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { motion } from "framer-motion";
 
 const API = "http://localhost:5000/api";
 
-export default function Dashboard() {
+export default function App() {
   const [produtos, setProdutos] = useState([]);
   const [vendas, setVendas] = useState([]);
 
@@ -36,11 +32,13 @@ export default function Dashboard() {
   async function cadastrarProduto() {
     await fetch(`${API}/produtos`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         nome: novoProduto.nome,
-        preco: novoProduto.preco,
-        quantidade_estoque: novoProduto.quantidade,
+        preco: Number(novoProduto.preco),
+        quantidade_estoque: Number(novoProduto.quantidade),
       }),
     });
 
@@ -48,11 +46,16 @@ export default function Dashboard() {
     listarProdutos();
   }
 
-  async function vender(produto_id) {
+  async function vender(id) {
     await fetch(`${API}/vendas`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ produto_id, quantidade: 1 }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        produto_id: id,
+        quantidade: 1,
+      }),
     });
 
     listarProdutos();
@@ -60,72 +63,53 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="p-6 grid gap-6">
-      <h1 className="text-3xl font-bold">🐾 Dashboard PetShop</h1>
+    <div style={{ padding: 20 }}>
+      <h1>🐾 Dashboard PetShop</h1>
 
-      {/* CADASTRO */}
-      <Card className="rounded-2xl shadow">
-        <CardContent className="p-4 grid gap-3">
-          <h2 className="text-xl font-semibold">Cadastrar Produto</h2>
-          <Input
-            placeholder="Nome"
-            value={novoProduto.nome}
-            onChange={(e) =>
-              setNovoProduto({ ...novoProduto, nome: e.target.value })
-            }
-          />
-          <Input
-            placeholder="Preço"
-            type="number"
-            value={novoProduto.preco}
-            onChange={(e) =>
-              setNovoProduto({ ...novoProduto, preco: e.target.value })
-            }
-          />
-          <Input
-            placeholder="Quantidade"
-            type="number"
-            value={novoProduto.quantidade}
-            onChange={(e) =>
-              setNovoProduto({ ...novoProduto, quantidade: e.target.value })
-            }
-          />
-          <Button onClick={cadastrarProduto}>Cadastrar</Button>
-        </CardContent>
-      </Card>
+      <h2>Cadastrar Produto</h2>
+      <input
+        placeholder="Nome"
+        value={novoProduto.nome}
+        onChange={(e) =>
+          setNovoProduto({ ...novoProduto, nome: e.target.value })
+        }
+      />
+      <input
+        placeholder="Preço"
+        type="number"
+        value={novoProduto.preco}
+        onChange={(e) =>
+          setNovoProduto({ ...novoProduto, preco: e.target.value })
+        }
+      />
+      <input
+        placeholder="Quantidade"
+        type="number"
+        value={novoProduto.quantidade}
+        onChange={(e) =>
+          setNovoProduto({ ...novoProduto, quantidade: e.target.value })
+        }
+      />
+      <button onClick={cadastrarProduto}>Cadastrar</button>
 
-      {/* PRODUTOS */}
-      <div className="grid md:grid-cols-3 gap-4">
+      <h2>Produtos</h2>
+      <ul>
         {produtos.map((p) => (
-          <motion.div
-            key={p.id}
-            whileHover={{ scale: 1.05 }}
-          >
-            <Card className="rounded-2xl shadow">
-              <CardContent className="p-4">
-                <h3 className="text-lg font-bold">{p.nome}</h3>
-                <p>R$ {p.preco}</p>
-                <p>Estoque: {p.quantidade_estoque}</p>
-                <Button className="mt-2" onClick={() => vender(p.id)}>
-                  Vender 1
-                </Button>
-              </CardContent>
-            </Card>
-          </motion.div>
+          <li key={p.id}>
+            {p.nome} - R$ {p.preco} - Estoque: {p.quantidade_estoque}
+            <button onClick={() => vender(p.id)}>Vender</button>
+          </li>
         ))}
-      </div>
+      </ul>
 
-      {/* VENDAS */}
-      <Card className="rounded-2xl shadow">
-        <CardContent className="p-4">
-          <h2 className="text-xl font-semibold mb-3">Vendas</h2>
-          {vendas.map((v) => (
-            <div key={v.id} className="border-b py-2">
-              {v.produto} - {v.quantidade}x - R$ {v.total}
-            </div>
-          ))}
-        </CardContent>
-      </Card>
+      <h2>Vendas</h2>
+      <ul>
+        {vendas.map((v) => (
+          <li key={v.id}>
+            {v.produto} - {v.quantidade}x - R$ {v.total}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
