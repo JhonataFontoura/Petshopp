@@ -46,6 +46,23 @@ def buscar_produto(produto_id):
     return produto
 
 
+def remover_produto(produto_id):
+    if not buscar_produto(produto_id):
+        return False
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM vendas WHERE produto_id = %s", (produto_id,))
+    cursor.execute("DELETE FROM produtos WHERE id = %s", (produto_id,))
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    return True
+
+
 # ================= VENDAS =================
 
 def registrar_venda(produto_id, quantidade):
@@ -105,3 +122,30 @@ def listar_vendas():
     conn.close()
 
     return vendas
+
+
+def remover_venda(venda_id):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute(
+        "SELECT produto_id, quantidade FROM vendas WHERE id = %s",
+        (venda_id,)
+    )
+    venda = cursor.fetchone()
+    if not venda:
+        cursor.close()
+        conn.close()
+        return False
+
+    cursor.execute(
+        "UPDATE produtos SET quantidade_estoque = quantidade_estoque + %s WHERE id = %s",
+        (venda['quantidade'], venda['produto_id'])
+    )
+    cursor.execute("DELETE FROM vendas WHERE id = %s", (venda_id,))
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    return True
