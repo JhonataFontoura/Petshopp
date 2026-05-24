@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from models import (
-    cadastrar_produto, listar_produtos, buscar_produto,
-    registrar_venda, listar_vendas
+    cadastrar_produto, listar_produtos, buscar_produto, remover_produto,
+    registrar_venda, listar_vendas, remover_venda
 )
 
 api = Blueprint('api', __name__)
@@ -59,6 +59,14 @@ def get_produto(produto_id):
     return jsonify(produto), 200
 
 
+@api.route('/produtos/<int:produto_id>', methods=['DELETE'])
+def delete_produto(produto_id):
+    """Remove um produto e suas vendas vinculadas."""
+    if remover_produto(produto_id):
+        return jsonify({'mensagem': 'Produto removido com sucesso'}), 200
+    return jsonify({'erro': 'Produto não encontrado'}), 404
+
+
 # ==================== ROTAS DE VENDAS ====================
 
 @api.route('/vendas', methods=['POST'])
@@ -92,3 +100,11 @@ def get_vendas():
         if v.get('data_venda'):
             v['data_venda'] = str(v['data_venda'])
     return jsonify(vendas), 200
+
+
+@api.route('/vendas/<int:venda_id>', methods=['DELETE'])
+def delete_venda(venda_id):
+    """Remove uma venda e devolve a quantidade ao estoque."""
+    if remover_venda(venda_id):
+        return jsonify({'mensagem': 'Venda removida com sucesso'}), 200
+    return jsonify({'erro': 'Venda não encontrada'}), 404
